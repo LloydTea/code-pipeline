@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+.App {
+  margin: auto;
+  max-width: 700px;
+}
+.row{
+  display: table;
+  width: 100%;
+}
+.assembly-stage{
+  display:table-cell;
+  width:25%;
+  text-align: left;
+}
+.assembly-add-item{
+  border:1px solid black;
+  margin: auto 10px;
+}
+
+.assembly-item{
+  padding: 5px 10px;
+  margin-top: 10px;
+  display: block;
+  box-shadow: 2px 2px black;
+border-radius:2px;
+}
+
+.assembly-item:hover{
+background:yellow
+}  
