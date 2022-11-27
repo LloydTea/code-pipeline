@@ -19,16 +19,15 @@ class Codepipeline extends Component {
   HandleOnChange = (event) => {
     this.setState({ NewItem: event.target.value });
   };
-
   RegNewEnter = (event) => {
     //On Click Of Enter Key And If Value Is Not Null
     if (event.key === "Enter" && event.target.value !== "") {
       //Add new element to the Idea list
-      this.state.Idea.push(this.state.NewItem);
+      this.setState((prevState) => ({
+        Idea: [...prevState.Idea, this.state.NewItem],
+      }));
 
       //print the new list of ideas
-      console.log(this.state.Idea);
-
       //Set Input Back To default
       event.target.value = "";
     }
@@ -40,17 +39,21 @@ class Codepipeline extends Component {
 
     //if statement for right-click and left-click conditions
     if (event.type === "click") {
-      //if left clicked move button to development stage
-      this.state.Development.push(event.target.value);
-
-      //Remove Button From Idea List
-      this.state.Idea.splice(index, 1);
+      this.setState((prevState) => ({
+        //if left clicked move button to development stage
+        Development: [...prevState.Development, event.target.value],
+        //Remove Button From Idea List
+        Idea: prevState.Idea.filter((_, i) => i !== index),
+      }));
     }
 
     //If Right-clicked
     else if (event.type === "contextmenu") {
       // Remove button from Idea List
-      this.state.Idea.splice(index, 1);
+      this.setState((prevState) => ({
+        //Remove Button From Idea List
+        Idea: prevState.Idea.filter((_, i) => i !== index),
+      }));
     }
   };
 
@@ -60,41 +63,48 @@ class Codepipeline extends Component {
 
     //if statement for right-click and left-click conditions
     if (event.type === "click") {
+      this.setState((prevState) => ({
+        //Add Button To Testing Stage List
+        Testing: [...prevState.Testing, event.target.value],
+        //Remove Button From Development List
+        Development: prevState.Development.filter((_, i) => i !== index),
+      }));
       //if left clicked move button to development stage
-      this.state.Testing.push(event.target.value);
-
-      //Remove Button From Idea List
-      this.state.Development.splice(index, 1);
     }
 
     //If Right-clicked
     else if (event.type === "contextmenu") {
-      this.state.Idea.unshift(event.target.value);
-
-      // Remove button from Idea List
-      this.state.Development.splice(index, 1);
+      this.setState((prevState) => ({
+        //Send Button To Top Idea Stage
+        Idea: [event.target.value, ...prevState.Idea],
+        // Remove button from Deployment Stage
+        Development: prevState.Development.filter((_, i) => i !== index),
+      }));
     }
   };
 
   TestMove = (event) => {
     //get the index of the element
     const index = this.state.Testing.indexOf(event.target.value);
-
     //if statement for right-click and left-click conditions
     if (event.type === "click") {
+      this.setState((prevState) => ({
+        //Add Button To Deployment Stage
+        Deployment: [...prevState.Deployment, event.target.value],
+        //Remove Button From Testing Stage
+        Testing: prevState.Testing.filter((_, i) => i !== index),
+      }));
       //if left clicked move button to development stage
-      this.state.Deployment.push(event.target.value);
-
-      //Remove Button From Idea List
-      this.state.Testing.splice(index, 1);
     }
 
     //If Right-clicked
     else if (event.type === "contextmenu") {
-      this.state.Development.unshift(event.target.value);
-
-      // Remove button from Idea List
-      this.state.Testing.splice(index, 1);
+      this.setState((prevState) => ({
+        //Add Button To Development Stage
+        Development: [event.target.value, ...prevState.Development],
+        //Remove Button From Testing Stage
+        Testing: prevState.Testing.filter((_, i) => i !== index),
+      }));
     }
   };
 
@@ -105,21 +115,21 @@ class Codepipeline extends Component {
     //if statement for right-click and left-click conditions
     if (event.type === "click") {
       //Remove Button From Idea List
-      this.state.Deployment.splice(index, 1);
+      this.setState((prevState) => ({
+        // Remove button from Development Stage
+        Deployment: prevState.Deployment.filter((_, i) => i !== index),
+      }));
     }
-
     //If Right-clicked
     else if (event.type === "contextmenu") {
-      this.state.Testing.unshift(event.target.value);
-
-      // Remove button from Idea List
-      this.state.Deployment.splice(index, 1);
+      this.setState((prevState) => ({
+        //Add Button To Testing Stage
+        Testing: [event.target.value, ...prevState.Testing],
+        // Remove button from Development Stage
+        Deployment: prevState.Deployment.filter((_, i) => i !== index),
+      }));
     }
   };
-
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-  }
   // TODO add your code here.
   // Feel free to use a functional component.
   // Don't forget about candidate-written-response.md
@@ -141,7 +151,6 @@ class Codepipeline extends Component {
         <div className='row'>
           <div className='assembly-stage'>
             Idea
-            {this.NewBu}
             <IdeaBtn
               NewIdea={this.state.Idea}
               Ideatrigger={this.Ideamove}></IdeaBtn>
@@ -221,4 +230,5 @@ function Deploymentbtn(props) {
     </button>
   ));
 }
+
 export default Codepipeline;
