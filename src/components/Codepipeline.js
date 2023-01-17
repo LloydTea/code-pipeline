@@ -1,9 +1,10 @@
+//Import react and class Component
 import React, { Component } from "react";
 
 class Codepipeline extends Component {
   constructor(props) {
     super(props);
-
+    //initiating the props state
     this.state = {
       NewItem: "",
       Idea: [],
