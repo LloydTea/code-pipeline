@@ -11,7 +11,7 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Navition
+## Navigation
 
 You can simple enter a new Item into the process by typing in the input followed by the `Enter Key` move forward by left click, and move backwards by right click.
 
